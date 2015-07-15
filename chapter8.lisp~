@@ -1,0 +1,21 @@
+;; if number is greater than 1, loop over all numbers
+;; from 2 to the natural square root of number.  If any of the loop
+;; numbers are factors of number, number is not a prime and the loop
+;; immediately exits
+(defun primep (number)
+  (when (> number 1)
+    (loop for fac from 2 to (isqrt number) never (zerop (mod number fac)))))
+
+(defun next-prime (number)
+  (loop for n from number  when (primep n) return n))
+
+;; structure of variable definition --> (var init-form step-form)
+;; init-form only executes at beginning of loop and binds resutl to
+;; var.
+;; step-form executes before each subsequent iteration and binds result
+;; to var.
+;; loop ends if value of var is greater than value of end
+(defmacro do-primes ((var start end) &body body)
+  `(do ((,var (next-prime ,start) (next-prime (1+ ,var))))
+       ((> ,var ,end))
+     ,@body))

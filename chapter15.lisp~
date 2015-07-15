@@ -1,0 +1,8 @@
+(defun component-present-p (value)
+  (and value (not (eql value :unsepcific))))
+
+(defun directory-pathname-p (p)
+  (and
+   (not (component-present-p (pathname-name p)))
+   (not (component-present-p (pathname-type p)))
+   p))

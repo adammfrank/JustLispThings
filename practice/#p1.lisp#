@@ -1,0 +1,3 @@
+(defun make-hundred )
+
+(defun make-hundred-helper (sequence))

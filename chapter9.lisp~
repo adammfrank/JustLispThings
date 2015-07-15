@@ -1,0 +1,22 @@
+(defun report-result (result form)
+  (format t "~:[FAIL~;pass~] ... ~a~%" result form)
+  result)
+
+(defmacro combine-results (&body forms)
+  (with-gensyms (result)
+    `(let ((,result t))
+      ,@(loop for f in forms collect `(unless ,f (setf ,result nil)))
+      ,result)))
+
+(defmacro check (&body forms)
+  `(progn  ; progn executes any # of forms in order and returns the last result
+     ,@(loop for f in forms collect `(report-result ,f ',f))))  ; @ splices result of argument into enclosing list
+
+(defun test-+ ()
+  (check
+   (= (+ 1 2) 3)
+   (= (+ 1 2 3) 6)
+   (= (+ -1 -3) -4)))
+
+
+
